@@ -1,7 +1,7 @@
 ﻿using entityframework.Contextos;
 using entityframework.Entidades;
 
-namespace entityframework.Servicosk
+namespace entityframework.Servicos
 {
     public class PessoaService
     {
@@ -15,19 +15,34 @@ namespace entityframework.Servicosk
             context.SaveChanges();
 
             //retorno
-            Console.WriteLine($" Pessoa {pessoa} cadastrasda com sucesso!");
+            Console.WriteLine($" Pessoa cadastrada com sucesso!");
         }
         public static void Consultar(PessoaDbContext context)
         {
             // Consultar 
             //SELECT * FROM pessoas
-            var pessoas = context.Pessoas.ToList();
-            //Exibir os dados
-            Console.WriteLine("Pessoas Cadastradas:");
+            //var pessoas = context.Pessoas.ToList();
+         
+            var pessoas = context.Pessoas
+                .OrderByDescending(p=>p.Cidade)
+                .ToList();
+
+            //if (!pessoas.Any())
+            //{
+               
+            //        Console.WriteLine($"Nenhuma pessoa encontrada sem a letra {letra} no nome.");
+            //}else
+
+               // Exibir os dados
+                Console.WriteLine("Pessoas Cadastradas:");
+
             foreach (var pessoa in pessoas)
             {
                 Console.WriteLine($"Código: {pessoa.Codigo} - Nome: {pessoa.Nome} - Cidade: {pessoa.Cidade} - Idade: {pessoa.Idade}");
+
             }
+
+
         }
         public static void Atualizar(PessoaDbContext context, Pessoa pessoaAtualizada)
         {
@@ -75,11 +90,11 @@ namespace entityframework.Servicosk
                 context.SaveChanges();
 
                 //Retorno
-                Console.WriteLine($"Registro da Pessoa {pessoa} apagado com sucesso");
+                Console.WriteLine($"Registro da Pessoa apagado com sucesso");
             }
             else
             {
-                Console.WriteLine($"{codigo} não encontrado");
+                Console.WriteLine($"Código {codigo} não encontrado");
             }
         }
     }
